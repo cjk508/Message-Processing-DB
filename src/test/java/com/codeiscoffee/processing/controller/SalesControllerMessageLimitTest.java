@@ -37,4 +37,15 @@ public class SalesControllerMessageLimitTest {
         result.andExpect(status().isForbidden());
         result.andExpect(content().json("{\"errorMessage\":\"There have been 50 successfully processed messages. Therefore this process has been paused.\",\"productType\":\"apple\",\"value\":0.1}"));
     }
+
+    @Test
+    public void testInternalServerError() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/sale").param("productType", "apple").param("value", "0.10");
+        String message = "Error occurred when attempting to retrieve sales data";
+        Mockito.when(salesService.getSales()).thenThrow(new RuntimeException(message));
+        ResultActions result = mockMvc.perform(request);
+
+        result.andExpect(status().isInternalServerError());
+        result.andExpect(content().json("{\"errorMessage\":\""+message+"\",\"productType\":\"apple\",\"value\":0.1}"));
+    }
 }

@@ -34,17 +34,24 @@ public class SalesController {
             @ApiResponse(code = 201, message = "Sale of product has been registered")
     })
     public ResponseEntity<String> registerSales(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value, @RequestParam(value = "occurrences", required = false, defaultValue = "1") int occurrences) {
+        HttpStatus errorStatus;
+        String errorBody;
         try {
             if (salesService.getSuccessfulMessages() < 50) {
                 return processSales(productType, value, occurrences);
             }
             throw new MessageLimitException(salesService.getSuccessfulMessages());
         } catch (MessageLimitException e) {
-            HttpHeaders headers = new HttpHeaders();
-            HttpStatus status = HttpStatus.FORBIDDEN;
-            String body = generateErrorResponse(productType, value, occurrences, e);
-            return new ResponseEntity<>(body, headers, status);
+            errorStatus = HttpStatus.FORBIDDEN;
+            errorBody = generateErrorResponse(productType, value, occurrences, e);
+
         }
+        catch (Exception e) {
+            errorStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            errorBody = generateErrorResponse(productType, value, occurrences, e);
+            log.error("Internal error occurred when registering sale of " + productType + " at price " + value + " for " + occurrences + " occurrences", e);
+        }
+        return new ResponseEntity<>(errorBody, new HttpHeaders(), errorStatus);
     }
 
     private ResponseEntity<String> processSales(String productType, Double value, int occurrences) {
@@ -67,10 +74,6 @@ public class SalesController {
             body = generateErrorResponse(productType, value, occurrences, e);
             status = HttpStatus.BAD_REQUEST;
             log.error("Error with parameters for sale of " + productType + " at price £" + value + " for " + occurrences + " occurrences", e);
-        } catch (Exception e) {
-            body = generateErrorResponse(productType, value, occurrences, e);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-            log.error("Internal error occurred when registering sale of " + productType + " at price " + value + " for " + occurrences + " occurrences", e);
         }
         return new ResponseEntity<>(body, headers, status);
     }

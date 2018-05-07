@@ -40,7 +40,7 @@ public class ReportingServiceAdjustmentReportTest {
 
         Mockito.when(adjustmentService.getAdjustments()).thenReturn(adjustments);
         String log = sut.reportOnAdjustments();
-        Assert.assertEquals("Apple first 0 sale(s) adjusted by +7.0\n", log);
+        Assert.assertEquals("Apple first 0 sale(s) adjusted by +7.00\n", log);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ReportingServiceAdjustmentReportTest {
 
         Mockito.when(adjustmentService.getAdjustments()).thenReturn(adjustments);
         String log = sut.reportOnAdjustments();
-        Assert.assertEquals("Apple first 0 sale(s) adjusted by x7123.0\n" +
-                "Apple first 0 sale(s) adjusted by +7.0\n", log);
+        Assert.assertEquals("Apple first 0 sale(s) adjusted by x7123.00\n" +
+                "Apple first 0 sale(s) adjusted by +7.00\n", log);
     }
 }

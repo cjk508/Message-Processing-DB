@@ -26,9 +26,7 @@ public class ReportingService {
         salesService.getSales().forEach((product, sales) -> {
             int totalSales = sales.stream().mapToInt(Sale::getUnits).sum();
             Double totalValue = sales.stream().mapToDouble(Sale::calculateValue).sum();
-            BigDecimal bdVal = BigDecimal.valueOf(totalValue);
-            bdVal = bdVal.setScale(2, RoundingMode.HALF_EVEN);
-            String logMessage = WordUtils.capitalizeFully(product) + " has " + totalSales + " sale(s), totalling £" + bdVal.toPlainString();
+            String logMessage = WordUtils.capitalizeFully(product) + " has " + totalSales + " sale(s), totalling £" + roundDoubleTo2DP(totalValue);
             log.info(logMessage);
             builder.append(logMessage);
             builder.append("\n");
@@ -56,11 +54,17 @@ public class ReportingService {
     private String generateReportForProduct(String product, LinkedList<Adjustment> adjustments) {
         StringBuilder builder = new StringBuilder();
         adjustments.forEach(adj -> {
-            String logMessage = WordUtils.capitalizeFully(product) + " first " + adj.getAffectedSales() + " sale(s) adjusted by " + adj.getOperator().getSymbol() + adj.getValue();
+            String logMessage = WordUtils.capitalizeFully(product) + " first " + adj.getAffectedSales() + " sale(s) adjusted by " + adj.getOperator().getSymbol() + roundDoubleTo2DP(adj.getValue());
             log.info(logMessage);
             builder.append(logMessage);
             builder.append("\n");
         });
         return builder.toString();
+    }
+
+    private String roundDoubleTo2DP(Double figureToBeRounded){
+        BigDecimal bdVal = BigDecimal.valueOf(figureToBeRounded);
+        bdVal = bdVal.setScale(2, RoundingMode.HALF_EVEN);
+        return bdVal.toPlainString();
     }
 }

@@ -9,14 +9,15 @@ public interface ProductValueValidation {
         if (Objects.isNull(value)) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value < 0) {
-            throw new IllegalArgumentException(value + " is less than 0. All values must be positive");
+        if (value <= 0) {
+            throw new IllegalArgumentException(value + " is less than or equal to 0. All values must be positive");
         }
     }
 
-    default void validateProductType(String productType) {
+    default String validateProductType(String productType) {
         if (StringUtils.isEmpty(productType)) {
             throw new IllegalArgumentException("ProductType cannot be blank");
         }
+        return productType.trim();
     }
 }

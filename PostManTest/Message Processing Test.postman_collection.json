@@ -1,0 +1,806 @@
+{
+	"info": {
+		"_postman_id": "600b9b01-df7c-4fc6-b787-31449d459b11",
+		"name": "Message Processing Test",
+		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Apple Sales and Adjustment",
+			"description": "",
+			"item": [
+				{
+					"name": "50 units - 0.17 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=0.17&units=50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "0.17"
+								},
+								{
+									"key": "units",
+									"value": "50"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "50 units - 0.20 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=0.20&units=50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "0.20"
+								},
+								{
+									"key": "units",
+									"value": "50"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "50 units - 0.17 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=0.17&units=50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "0.17"
+								},
+								{
+									"key": "units",
+									"value": "50"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "50 units - 1.17 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=1.17&units=50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "1.17"
+								},
+								{
+									"key": "units",
+									"value": "50"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "50 units - 0.01 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=0.01&units=50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "0.01"
+								},
+								{
+									"key": "units",
+									"value": "50"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "21 units - 100 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=100&units=21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "100"
+								},
+								{
+									"key": "units",
+									"value": "21"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "1unit - 21 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "21"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "50 units - 0.17 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=0.17&units=50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "0.17"
+								},
+								{
+									"key": "units",
+									"value": "50"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "50 units - 0.17 - Apple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Apple&value=0.17&units=50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "0.17"
+								},
+								{
+									"key": "units",
+									"value": "50"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "Apple adjustment - +0.17",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/adjustment?productType=Apple&value=0.17&operator=ADD",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adjustment"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Apple"
+								},
+								{
+									"key": "value",
+									"value": "0.17"
+								},
+								{
+									"key": "operator",
+									"value": "ADD"
+								}
+							]
+						},
+						"description": "Post an adjustment to a product type"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orange Sales and Adjustments",
+			"description": "",
+			"item": [
+				{
+					"name": "1 units - 123 - Orange",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=Orange&value=123&units=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "Orange"
+								},
+								{
+									"key": "value",
+									"value": "123"
+								},
+								{
+									"key": "units",
+									"value": "1"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "11 units - 12.3 - OrAnge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=OrAnge&value=12.3&units=11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "OrAnge"
+								},
+								{
+									"key": "value",
+									"value": "12.3"
+								},
+								{
+									"key": "units",
+									"value": "11"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "Orange adjustment x0.17",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/adjustment?productType=OrAnge&value=0.17&operator=MULTIPLY",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adjustment"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "OrAnge"
+								},
+								{
+									"key": "value",
+									"value": "0.17"
+								},
+								{
+									"key": "operator",
+									"value": "MULTIPLY"
+								}
+							]
+						},
+						"description": "Post an adjustment to a product type"
+					},
+					"response": []
+				},
+				{
+					"name": "Orange adjustment +12",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/adjustment?productType=ORANGe&value=12&operator=ADD",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adjustment"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "ORANGe"
+								},
+								{
+									"key": "value",
+									"value": "12"
+								},
+								{
+									"key": "operator",
+									"value": "ADD"
+								}
+							]
+						},
+						"description": "Post an adjustment to a product type"
+					},
+					"response": []
+				},
+				{
+					"name": "11 units - 12.3 - OrAngE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=OrAnge&value=12.3&units=11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "OrAnge"
+								},
+								{
+									"key": "value",
+									"value": "12.3"
+								},
+								{
+									"key": "units",
+									"value": "11"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "1132 units - 0.142 - OrAngE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=OrAngE&value=0.142&units=1132",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "OrAngE"
+								},
+								{
+									"key": "value",
+									"value": "0.142"
+								},
+								{
+									"key": "units",
+									"value": "1132"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "11 units - 12.3 - OrAnge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=OrAnge&value=12.3&units=11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "OrAnge"
+								},
+								{
+									"key": "value",
+									"value": "12.3"
+								},
+								{
+									"key": "units",
+									"value": "11"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "112 units - 12.3 - OrAnge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/sale?productType=OrAnge&value=12.3&units=112",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "OrAnge"
+								},
+								{
+									"key": "value",
+									"value": "12.3"
+								},
+								{
+									"key": "units",
+									"value": "112"
+								}
+							]
+						},
+						"description": "POST 1 sales item"
+					},
+					"response": []
+				},
+				{
+					"name": "Orange adjustment -1 (BAD REQUEST)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/adjustment?productType=ORANGe&value=1&operator=SUBTRACT",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adjustment"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "ORANGe"
+								},
+								{
+									"key": "value",
+									"value": "1"
+								},
+								{
+									"key": "operator",
+									"value": "SUBTRACT"
+								}
+							]
+						},
+						"description": "Post an adjustment to a product type"
+					},
+					"response": []
+				},
+				{
+					"name": "Orange adjustment +11",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/adjustment?productType=ORANGe&value=11&operator=ADD",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adjustment"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "ORANGe"
+								},
+								{
+									"key": "value",
+									"value": "11"
+								},
+								{
+									"key": "operator",
+									"value": "ADD"
+								}
+							]
+						},
+						"description": "Post an adjustment to a product type"
+					},
+					"response": []
+				},
+				{
+					"name": "Orange adjustment +11",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/adjustment?productType=ORANGe&value=11&operator=ADD",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adjustment"
+							],
+							"query": [
+								{
+									"key": "productType",
+									"value": "ORANGe"
+								},
+								{
+									"key": "value",
+									"value": "11"
+								},
+								{
+									"key": "operator",
+									"value": "ADD"
+								}
+							]
+						},
+						"description": "Post an adjustment to a product type"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{PASSWORD}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{USERNAME}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1c6ba440-372a-461b-9eaa-38f72d40c3c3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c091748e-d15e-4ab8-aaec-e29c02c1f1b5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "f3233b0c-e9a9-4339-b5ba-72bb1427eeab",
+			"key": "USERNAME",
+			"value": "admin",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "6ae64d9a-2522-4c75-a3b2-9da47db3c31b",
+			"key": "PASSWORD",
+			"value": "admin",
+			"type": "string",
+			"description": ""
+		}
+	]
+}

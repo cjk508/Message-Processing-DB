@@ -1,6 +1,7 @@
 package com.codeiscoffee.processing.controller;
 
 import com.codeiscoffee.processing.data.Sale;
+import com.codeiscoffee.processing.exceptions.MessageLimitException;
 import com.codeiscoffee.processing.service.ReportingService;
 import com.codeiscoffee.processing.service.SalesService;
 import com.google.gson.Gson;
@@ -33,6 +34,21 @@ public class SalesController {
             @ApiResponse(code = 201, message = "Sale of product has been registered")
     })
     public ResponseEntity<String> registerSale(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value) {
+        try{
+            if(salesService.getSuccessfulMessages() < 50){
+                return registerSingleSale(productType, value);
+            }
+            throw new MessageLimitException(salesService.getSuccessfulMessages());
+        }
+        catch (MessageLimitException e){
+            HttpHeaders headers = new HttpHeaders();
+            HttpStatus status = HttpStatus.FORBIDDEN;
+            String body = generateErrorResponse(productType, value, e);
+            return new ResponseEntity<>(body, headers, status);
+        }
+    }
+
+    private ResponseEntity<String> registerSingleSale(String productType, Double value) {
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status;
         String body;

@@ -14,13 +14,11 @@ public class Sales extends HashMap<String, List<Sale>> {
         log.info("");
     }
 
-    public Sale addSale(String productType, Double value) {
-        Sale sale = new Sale(productType, value);
+    public void addSale(Sale sale) {
         log.info(sale.toString());
-        this.merge(productType.toUpperCase(), new ArrayList<>(Collections.singletonList(sale)), (v1, v2) -> {
+        this.merge(sale.getProductType().toUpperCase(), new ArrayList<>(Collections.singletonList(sale)), (v1, v2) -> {
             v1.addAll(v2);
             return v1;
         });
-        return sale;
     }
 }

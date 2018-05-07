@@ -17,13 +17,13 @@ public class SalesServiceTest {
     public void testEmptyProductType() {
         double value = 12d;
         String productType = "";
-        sut.registerSale(productType, value);
+        sut.registerSale(productType, value, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullValue() {
         String productType = "Product";
-        sut.registerSale(productType, null);
+        sut.registerSale(productType, null, 1);
     }
 
     @Test
@@ -33,6 +33,6 @@ public class SalesServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeValueIsInvalid() {
-        sut.registerSale("productType", -1.0d);
+        sut.registerSale("productType", -1.0d, 1);
     }
 }

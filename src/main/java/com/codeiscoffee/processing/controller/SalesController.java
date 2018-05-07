@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-@Slf4j
+@Slf4j(topic = "org.codeiscoffee")
 public class SalesController {
 
     private SalesService salesService;
@@ -33,40 +33,44 @@ public class SalesController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Sale of product has been registered")
     })
-    public ResponseEntity<String> registerSale(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value) {
-        try{
-            if(salesService.getSuccessfulMessages() < 50){
-                return registerSingleSale(productType, value);
+    public ResponseEntity<String> registerSales(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value, @RequestParam(value = "occurrences", required = false, defaultValue = "1") int occurrences) {
+        try {
+            if (salesService.getSuccessfulMessages() < 50) {
+                return processSales(productType, value, occurrences);
             }
             throw new MessageLimitException(salesService.getSuccessfulMessages());
-        }
-        catch (MessageLimitException e){
+        } catch (MessageLimitException e) {
             HttpHeaders headers = new HttpHeaders();
             HttpStatus status = HttpStatus.FORBIDDEN;
-            String body = generateErrorResponse(productType, value, e);
+            String body = generateErrorResponse(productType, value, occurrences, e);
             return new ResponseEntity<>(body, headers, status);
         }
     }
 
-    private ResponseEntity<String> registerSingleSale(String productType, Double value) {
+    private ResponseEntity<String> processSales(String productType, Double value, int occurrences) {
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status;
         String body;
         try {
-            Sale sale = salesService.registerSale(productType, value);
-            if(salesService.getSuccessfulMessages() % 10 == 0){
-                reportingService.reportSales();
+
+            Sale sale = salesService.registerSale(productType, value, occurrences);
+            if (salesService.getSuccessfulMessages() == 50) {
+                log.info("Service has processed its 50th message. The process will now pause and stop accepting new messages.");
+            }
+            if (salesService.getSuccessfulMessages() % 10 == 0){
+                reportingService.reportOnSales();
             }
             body = generateSuccessfulSaleResponse(sale);
             status = HttpStatus.CREATED;
+
         } catch (IllegalArgumentException e) {
-            body = generateErrorResponse(productType, value, e);
+            body = generateErrorResponse(productType, value, occurrences, e);
             status = HttpStatus.BAD_REQUEST;
-            log.error("Error with parameters for sale of " + productType + " at price " + value, e);
+            log.error("Error with parameters for sale of " + productType + " at price £" + value + " for " + occurrences + " occurrences", e);
         } catch (Exception e) {
-            body = generateErrorResponse(productType, value, e);
+            body = generateErrorResponse(productType, value, occurrences, e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            log.error("Internal error occurred when registering sale of " + productType + " at price " + value, e);
+            log.error("Internal error occurred when registering sale of " + productType + " at price " + value + " for " + occurrences + " occurrences", e);
         }
         return new ResponseEntity<>(body, headers, status);
     }
@@ -81,12 +85,13 @@ public class SalesController {
         return body;
     }
 
-    private String generateErrorResponse(String productType, Double value, Exception e) {
+    private String generateErrorResponse(String productType, Double value, int occurrences, Exception e) {
         String body;
         JsonObject json = new JsonObject();
         json.addProperty("errorMessage", e.getMessage());
         json.addProperty("productType", productType);
         json.addProperty("value", value);
+        json.addProperty("occurrences", occurrences);
         json.addProperty("successfullyProcessedMessages", salesService.getSuccessfulMessages());
         body = json.toString();
         return body;

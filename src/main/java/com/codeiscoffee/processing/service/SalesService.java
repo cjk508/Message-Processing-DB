@@ -13,7 +13,7 @@ public class SalesService implements ProductValueValidation {
     private Sales sales = new Sales();
 
     public Sale registerSale(String productType, Double value, int units) {
-        validateProductType(productType);
+        productType = validateProductType(productType);
         validateValue(value);
         Sale sale = new Sale(productType, units, value);
         sales.addSale(sale);

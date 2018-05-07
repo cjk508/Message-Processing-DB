@@ -31,7 +31,7 @@ public class SalesController {
     private MessageCountService messageCountService;
 
     @RequestMapping(value = "/sale", method = RequestMethod.POST, produces = "application/json")
-    @ApiOperation(value = "Add one sale for the product type specified at the value provided.", response = String.class)
+    @ApiOperation(value = "Add sale record for at least 1 unit for the product type specified at the value provided.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Sale of product has been registered")
     })

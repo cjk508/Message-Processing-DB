@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayDeque;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 @Service
@@ -51,14 +53,17 @@ public class ReportingService {
         return builder.toString();
     }
 
-    private String generateReportForProduct(String product, LinkedList<Adjustment> adjustments) {
+    private String generateReportForProduct(String product, ArrayDeque<Adjustment> adjustments) {
         StringBuilder builder = new StringBuilder();
-        adjustments.forEach(adj -> {
+        Iterator<Adjustment> iterator = adjustments.descendingIterator();
+        while(iterator.hasNext()){
+            Adjustment adj = iterator.next();
             String logMessage = WordUtils.capitalizeFully(product) + " first " + adj.getAffectedSales() + " sale(s) adjusted by " + adj.getOperator().getSymbol() + roundDoubleTo2DP(adj.getValue());
             log.info(logMessage);
             builder.append(logMessage);
             builder.append("\n");
-        });
+        }
+        
         return builder.toString();
     }
 

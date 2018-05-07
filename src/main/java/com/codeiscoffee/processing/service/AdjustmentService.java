@@ -28,7 +28,7 @@ public class AdjustmentService implements ProductValueValidation {
     }
 
     public Adjustment processAdjustment(String productType, Double value, Operator operator) {
-        validateProductType(productType);
+        productType = validateProductType(productType);
         validateValue(value);
         Adjustment adjustment = new Adjustment(productType, operator, value);
         adjustSales(adjustment);

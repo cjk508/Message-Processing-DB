@@ -62,7 +62,7 @@ public class ReportingService {
         return builder.toString();
     }
 
-    private String roundDoubleTo2DP(Double figureToBeRounded){
+    private String roundDoubleTo2DP(Double figureToBeRounded) {
         BigDecimal bdVal = BigDecimal.valueOf(figureToBeRounded);
         bdVal = bdVal.setScale(2, RoundingMode.HALF_EVEN);
         return bdVal.toPlainString();

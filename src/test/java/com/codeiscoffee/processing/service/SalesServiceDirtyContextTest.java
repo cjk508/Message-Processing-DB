@@ -1,6 +1,6 @@
 package com.codeiscoffee.processing.service;
 
-import com.codeiscoffee.processing.data.Sale;
+import com.codeiscoffee.processing.data.sales.Sale;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ public class SalesServiceDirtyContextTest {
     public void testAddingValidSaleData() {
         String productType = "APPLE";
         Double value = 0.10;
-        Sale sale = new Sale(productType, value,1);
+        Sale sale = new Sale(productType, 1, value);
         sut.registerSale(productType, value, 1);
         Assert.assertTrue("sale of " + productType + " not found.", sut.getSales().containsKey(productType));
         Assert.assertTrue("sale of " + productType + " not found.", sut.getSales().get(productType).contains(sale));

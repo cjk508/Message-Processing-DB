@@ -20,4 +20,5 @@ public interface ProductValueValidation {
         }
         return productType.trim();
     }
+
 }

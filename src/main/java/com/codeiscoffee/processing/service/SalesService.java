@@ -16,7 +16,7 @@ public class SalesService {
     @Getter
     private int successfulMessages = 0;
 
-    public Sale registerSale(String productType, Double value){
+    public Sale registerSale(String productType, Double value) {
         validateProductType(productType);
         validateValue(value);
         Sale sale = sales.addSale(productType, value);
@@ -25,16 +25,16 @@ public class SalesService {
     }
 
     private void validateValue(Double value) {
-        if(Objects.isNull(value)){
+        if (Objects.isNull(value)) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if(value < 0){
-            throw new IllegalArgumentException(value+" is less than 0. All values must be positive");
+        if (value < 0) {
+            throw new IllegalArgumentException(value + " is less than 0. All values must be positive");
         }
     }
 
     private void validateProductType(String productType) {
-        if(StringUtils.isEmpty(productType)){
+        if (StringUtils.isEmpty(productType)) {
             throw new IllegalArgumentException("ProductType cannot be blank");
         }
 

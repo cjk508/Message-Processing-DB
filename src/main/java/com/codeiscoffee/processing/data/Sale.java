@@ -8,4 +8,8 @@ import lombok.EqualsAndHashCode;
 public class Sale {
     private String productType;
     private Double value;
+
+    public Double calculateValue() {
+        return value;
+    }
 }

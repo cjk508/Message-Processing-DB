@@ -1,6 +1,7 @@
 package com.codeiscoffee.processing.controller;
 
 import com.codeiscoffee.processing.data.Sale;
+import com.codeiscoffee.processing.service.ReportingService;
 import com.codeiscoffee.processing.service.SalesService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SalesController {
 
     private SalesService salesService;
+    private ReportingService reportingService;
 
     @RequestMapping(value = "/sale", method = RequestMethod.POST, produces = "application/json")
     @ApiOperation(value = "Add one sale for the product type specified at the value provided.", response = String.class)
@@ -34,20 +36,21 @@ public class SalesController {
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status;
         String body;
-        try{
-             Sale sale =  salesService.registerSale(productType, value);
+        try {
+            Sale sale = salesService.registerSale(productType, value);
+            if(salesService.getSuccessfulMessages() % 10 == 0){
+                reportingService.reportSales();
+            }
             body = generateSuccessfulSaleResponse(sale);
-             status = HttpStatus.CREATED;
-        }
-        catch(IllegalArgumentException e){
+            status = HttpStatus.CREATED;
+        } catch (IllegalArgumentException e) {
             body = generateErrorResponse(productType, value, e);
             status = HttpStatus.BAD_REQUEST;
-            log.error("Error with parameters for sale of "+ productType +" at price "+ value, e);
-        }
-        catch(Exception e){
+            log.error("Error with parameters for sale of " + productType + " at price " + value, e);
+        } catch (Exception e) {
             body = generateErrorResponse(productType, value, e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            log.error("Internal error occurred when registering sale of "+ productType +" at price "+ value, e);
+            log.error("Internal error occurred when registering sale of " + productType + " at price " + value, e);
         }
         return new ResponseEntity<>(body, headers, status);
     }
@@ -56,7 +59,7 @@ public class SalesController {
         String body;
         Gson gson = new Gson();
         JsonObject json = new JsonObject();
-        json.addProperty("sale", gson.toJson(sale));
+        json.add("sale", gson.toJsonTree(sale));
         json.addProperty("successfullyProcessedMessages", salesService.getSuccessfulMessages());
         body = json.toString();
         return body;

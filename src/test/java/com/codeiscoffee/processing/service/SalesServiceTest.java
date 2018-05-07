@@ -27,8 +27,8 @@ public class SalesServiceTest {
     }
 
     @Test
-    public void testEmptySalesListOnInit(){
-        Assert.assertTrue("Sales is not empty on start",sut.getSales().isEmpty());
+    public void testEmptySalesListOnInit() {
+        Assert.assertTrue("Sales is not empty on start", sut.getSales().isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -1,12 +1,12 @@
 package com.codeiscoffee.processing.controller;
 
-import com.codeiscoffee.processing.data.sales.Sale;
+import com.codeiscoffee.processing.data.Operator;
+import com.codeiscoffee.processing.data.adjustment.Adjustment;
 import com.codeiscoffee.processing.exceptions.MessageLimitException;
+import com.codeiscoffee.processing.service.AdjustmentService;
 import com.codeiscoffee.processing.service.MessageCountService;
 import com.codeiscoffee.processing.service.ReportingService;
 import com.codeiscoffee.processing.service.SalesService;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -24,44 +24,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j(topic = "org.codeiscoffee")
-public class SalesController {
+public class AdjustmentController {
 
-    private SalesService salesService;
+    private AdjustmentService adjService;
     private ReportingService reportingService;
     private MessageCountService messageCountService;
 
-    @RequestMapping(value = "/sale", method = RequestMethod.POST, produces = "application/json")
-    @ApiOperation(value = "Add one sale for the product type specified at the value provided.", response = String.class)
+    @RequestMapping(value = "/adjustment", method = RequestMethod.POST, produces = "application/json")
+    @ApiOperation(value = "Adjust historic sales for 1 product using a set of 3 operations (Add, Subtract or Multiply). If any operation causes " +
+            "a historic sale to drop below zero then it will fail and the change will be reverted.", response = String.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Sale of product has been registered")
+            @ApiResponse(code = 201, message = "Adjustment had been created")
     })
-    public ResponseEntity<String> registerSales(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value, @RequestParam(value = "units", required = false, defaultValue = "1") int units) {
+    public ResponseEntity<String> registerSales(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value, @RequestParam(value = "operator") Operator operator) {
         HttpStatus errorStatus;
         String errorBody;
         try {
             if (messageCountService.getSuccessfulMessages() < 50) {
-                return processSales(productType, value, units);
+                return processAdjustment(productType, value, operator);
             }
             throw new MessageLimitException(messageCountService.getSuccessfulMessages());
         } catch (MessageLimitException e) {
             errorStatus = HttpStatus.FORBIDDEN;
-            errorBody = generateErrorResponse(productType, value, units, e);
+            errorBody = "";
 
         } catch (Exception e) {
             errorStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            errorBody = generateErrorResponse(productType, value, units, e);
-            log.error("Internal error occurred when registering sale of " + productType + " at price " + value + " for " + units + " units", e);
+            errorBody = "";
+//            log.error("Internal error occurred when registering sale of " + productType + " at price " + value + " for " + units + " units", e);
         }
         return new ResponseEntity<>(errorBody, new HttpHeaders(), errorStatus);
     }
 
-    private ResponseEntity<String> processSales(String productType, Double value, int occurrences) {
+    private ResponseEntity<String> processAdjustment(String productType, Double value, Operator operator) {
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status;
         String body;
         try {
-
-            Sale sale = salesService.registerSale(productType, value, occurrences);
+            Adjustment adjustment = adjService.processAdjustment(productType, value, operator);
             messageCountService.registerSuccessfulMessage();
             if (messageCountService.getSuccessfulMessages() % 10 == 0) {
                 reportingService.reportOnSales();
@@ -70,36 +70,14 @@ public class SalesController {
                 log.info("Service has processed its 50th message. The process will now pause and stop accepting new messages.");
                 reportingService.reportOnAdjustments();
             }
-            body = generateSuccessfulSaleResponse(sale);
+            body = "";
             status = HttpStatus.CREATED;
 
         } catch (IllegalArgumentException e) {
-            body = generateErrorResponse(productType, value, occurrences, e);
+            body = "";
             status = HttpStatus.BAD_REQUEST;
-            log.error("Error with parameters for sale of " + productType + " at price £" + value + " for " + occurrences + " occurrences", e);
+//            log.error("Error with parameters for sale of " + productType + " at price £" + value + " for " + operator + " occurrences", e);
         }
         return new ResponseEntity<>(body, headers, status);
-    }
-
-    private String generateSuccessfulSaleResponse(Sale sale) {
-        String body;
-        Gson gson = new Gson();
-        JsonObject json = new JsonObject();
-        json.add("sale", gson.toJsonTree(sale));
-        json.addProperty("successfullyProcessedMessages", messageCountService.getSuccessfulMessages());
-        body = json.toString();
-        return body;
-    }
-
-    private String generateErrorResponse(String productType, Double value, int occurrences, Exception e) {
-        String body;
-        JsonObject json = new JsonObject();
-        json.addProperty("errorMessage", e.getMessage());
-        json.addProperty("productType", productType);
-        json.addProperty("value", value);
-        json.addProperty("occurrences", occurrences);
-        json.addProperty("successfullyProcessedMessages", messageCountService.getSuccessfulMessages());
-        body = json.toString();
-        return body;
     }
 }

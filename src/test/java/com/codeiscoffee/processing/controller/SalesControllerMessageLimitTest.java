@@ -1,5 +1,6 @@
 package com.codeiscoffee.processing.controller;
 
+import com.codeiscoffee.processing.service.MessageCountService;
 import com.codeiscoffee.processing.service.SalesService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,12 +27,14 @@ public class SalesControllerMessageLimitTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
+    private MessageCountService messageCountService;
+    @MockBean
     private SalesService salesService;
 
     @Test
     public void testMessageLimit() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/sale").param("productType", "apple").param("value", "0.10");
-        Mockito.when(salesService.getSuccessfulMessages()).thenReturn(50);
+        Mockito.when(messageCountService.getSuccessfulMessages()).thenReturn(50);
         ResultActions result = mockMvc.perform(request);
 
         result.andExpect(status().isForbidden());
@@ -46,6 +49,6 @@ public class SalesControllerMessageLimitTest {
         ResultActions result = mockMvc.perform(request);
 
         result.andExpect(status().isInternalServerError());
-        result.andExpect(content().json("{\"errorMessage\":\""+message+"\",\"productType\":\"apple\",\"value\":0.1}"));
+        result.andExpect(content().json("{\"errorMessage\":\"" + message + "\",\"productType\":\"apple\",\"value\":0.1}"));
     }
 }

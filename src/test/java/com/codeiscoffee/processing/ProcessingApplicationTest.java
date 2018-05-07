@@ -15,7 +15,7 @@ public class ProcessingApplicationTest {
         ProcessingApplication.main(new String[]{
                 // Override any other environment properties according to your needs
         });
-        Assert.assertTrue("If this fails then the context cannot be loaded",true);
+        Assert.assertTrue("If this fails then the context cannot be loaded", true);
     }
 
 }

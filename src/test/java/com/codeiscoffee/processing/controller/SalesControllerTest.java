@@ -63,6 +63,6 @@ public class SalesControllerTest {
         ResultActions result = mockMvc.perform(request);
 
         result.andExpect(status().isCreated());
-        result.andExpect(content().json("{\"sale\":\"{\\\"productType\\\":\\\"apple\\\",\\\"value\\\":0.1}\",\"successfullyProcessedMessages\":1}"));
+        result.andExpect(content().json("{\"sale\":{\"productType\":\"apple\",\"value\":0.1},\"successfullyProcessedMessages\":1}"));
     }
 }

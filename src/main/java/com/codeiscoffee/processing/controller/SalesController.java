@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-@Slf4j
+@Slf4j(topic = "org.codeiscoffee")
 public class SalesController {
 
     private SalesService salesService;
@@ -54,7 +54,10 @@ public class SalesController {
         try {
 
             Sale sale = salesService.registerSale(productType, value, occurrences);
-            if (salesService.getSuccessfulMessages() % 10 == 0) {
+            if (salesService.getSuccessfulMessages() == 50) {
+                log.info("Service has processed its 50th message. The process will now pause and stop accepting new messages.");
+            }
+            if (salesService.getSuccessfulMessages() % 10 == 0){
                 reportingService.reportOnSales();
             }
             body = generateSuccessfulSaleResponse(sale);

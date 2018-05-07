@@ -27,7 +27,7 @@ public class ReportingService {
             int totalSales = sales.stream().mapToInt(Sale::getUnits).sum();
             Double totalValue = sales.stream().mapToDouble(Sale::calculateValue).sum();
             BigDecimal bdVal = BigDecimal.valueOf(totalValue);
-            bdVal =  bdVal.setScale(2, RoundingMode.HALF_EVEN);
+            bdVal = bdVal.setScale(2, RoundingMode.HALF_EVEN);
             String logMessage = WordUtils.capitalizeFully(product) + " has " + totalSales + " sale(s), totalling £" + bdVal.toPlainString();
             log.info(logMessage);
             builder.append(logMessage);
@@ -39,11 +39,17 @@ public class ReportingService {
 
     public String reportOnAdjustments() {
         StringBuilder builder = new StringBuilder();
-        log.info("Sales Report after " + messageCountService.getSuccessfulMessages() + " messages");
+        log.info("Adjustments report after " + messageCountService.getSuccessfulMessages() + " messages");
 
         adjustmentService.getAdjustments().forEach((product, adj) ->
                 builder.append(generateReportForProduct(product, adj))
         );
+
+        if (adjustmentService.getAdjustments().isEmpty()) {
+            String emptyMessage = "None of the messages were valid adjustments";
+            log.info(emptyMessage);
+            builder.append(emptyMessage);
+        }
         return builder.toString();
     }
 

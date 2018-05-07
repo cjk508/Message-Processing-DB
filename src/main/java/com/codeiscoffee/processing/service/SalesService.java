@@ -4,7 +4,6 @@ import com.codeiscoffee.processing.data.sales.Sale;
 import com.codeiscoffee.processing.data.sales.Sales;
 import com.codeiscoffee.processing.validation.ProductValueValidation;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

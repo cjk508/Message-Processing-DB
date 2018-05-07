@@ -6,7 +6,8 @@ import com.codeiscoffee.processing.exceptions.MessageLimitException;
 import com.codeiscoffee.processing.service.AdjustmentService;
 import com.codeiscoffee.processing.service.MessageCountService;
 import com.codeiscoffee.processing.service.ReportingService;
-import com.codeiscoffee.processing.service.SalesService;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -36,7 +37,7 @@ public class AdjustmentController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Adjustment had been created")
     })
-    public ResponseEntity<String> registerSales(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value, @RequestParam(value = "operator") Operator operator) {
+    public ResponseEntity<String> registerAdjustment(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value, @RequestParam(value = "operator") Operator operator) {
         HttpStatus errorStatus;
         String errorBody;
         try {
@@ -46,12 +47,12 @@ public class AdjustmentController {
             throw new MessageLimitException(messageCountService.getSuccessfulMessages());
         } catch (MessageLimitException e) {
             errorStatus = HttpStatus.FORBIDDEN;
-            errorBody = "";
+            errorBody = generateErrorResponse(productType, value, operator, e);
 
         } catch (Exception e) {
             errorStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            errorBody = "";
-//            log.error("Internal error occurred when registering sale of " + productType + " at price " + value + " for " + units + " units", e);
+            errorBody = generateErrorResponse(productType, value, operator, e);
+            log.error("Error when adjusting sales of " + productType + " with adjustment " + operator.getSymbol() + value, e);
         }
         return new ResponseEntity<>(errorBody, new HttpHeaders(), errorStatus);
     }
@@ -70,14 +71,36 @@ public class AdjustmentController {
                 log.info("Service has processed its 50th message. The process will now pause and stop accepting new messages.");
                 reportingService.reportOnAdjustments();
             }
-            body = "";
+            body = generateSuccessResponse(adjustment);
             status = HttpStatus.CREATED;
 
         } catch (IllegalArgumentException e) {
-            body = "";
+            body = generateErrorResponse(productType, value, operator, e);
             status = HttpStatus.BAD_REQUEST;
-//            log.error("Error with parameters for sale of " + productType + " at price £" + value + " for " + operator + " occurrences", e);
+            log.error("Error when adjusting sales of " + productType + " with adjustment " + operator.getSymbol() + value, e);
         }
         return new ResponseEntity<>(body, headers, status);
+    }
+
+    private String generateSuccessResponse(Adjustment adjustment) {
+        String body;
+        Gson gson = new Gson();
+        JsonObject json = new JsonObject();
+        json.add("adjustment", gson.toJsonTree(adjustment));
+        json.addProperty("successfullyProcessedMessages", messageCountService.getSuccessfulMessages());
+        body = json.toString();
+        return body;
+    }
+
+    private String generateErrorResponse(String productType, Double value, Operator operator, Exception e) {
+        String body;
+        JsonObject json = new JsonObject();
+        json.addProperty("errorMessage", e.getMessage());
+        json.addProperty("productType", productType);
+        json.addProperty("value", value);
+        json.addProperty("operator", operator.toString());
+        json.addProperty("successfullyProcessedMessages", messageCountService.getSuccessfulMessages());
+        body = json.toString();
+        return body;
     }
 }

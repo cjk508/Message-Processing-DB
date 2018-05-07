@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) //just in case
 @AutoConfigureMockMvc
 @SpringBootTest
-public class SalesControllerMessageLimitTest {
+public class AdjustmentContollerErrorTests {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -33,7 +33,15 @@ public class SalesControllerMessageLimitTest {
 
     @Test
     public void testMessageLimit() throws Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/sale").param("productType", "apple").param("value", "0.10");
+        String productType = "apple";
+        String value = "0.10";
+        MockHttpServletRequestBuilder addSale = MockMvcRequestBuilders.post("/sale").param("productType", productType).param("value", value);
+        mockMvc.perform(addSale);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/adjustment")
+                .param("productType", productType)
+                .param("value", value)
+                .param("operator", "ADD");
         Mockito.when(messageCountService.getSuccessfulMessages()).thenReturn(50);
         ResultActions result = mockMvc.perform(request);
 
@@ -43,7 +51,15 @@ public class SalesControllerMessageLimitTest {
 
     @Test
     public void testInternalServerError() throws Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/sale").param("productType", "apple").param("value", "0.10");
+        String productType = "apple";
+        String value = "0.10";
+        MockHttpServletRequestBuilder addSale = MockMvcRequestBuilders.post("/sale").param("productType", productType).param("value", value);
+        mockMvc.perform(addSale);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/adjustment")
+                .param("productType", productType)
+                .param("value", value)
+                .param("operator", "ADD");
         String message = "Error occurred when attempting to retrieve sales data";
         Mockito.when(salesService.getSales()).thenThrow(new RuntimeException(message));
         ResultActions result = mockMvc.perform(request);

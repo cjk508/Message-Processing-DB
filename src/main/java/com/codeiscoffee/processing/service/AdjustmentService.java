@@ -5,7 +5,6 @@ import com.codeiscoffee.processing.data.adjustment.Adjustment;
 import com.codeiscoffee.processing.data.adjustment.Adjustments;
 import com.codeiscoffee.processing.data.sales.Sale;
 import com.codeiscoffee.processing.validation.ProductValueValidation;
-import com.google.gson.Gson;
 import lombok.Getter;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +48,7 @@ public class AdjustmentService implements ProductValueValidation {
                     sale.setValue(newValue);
                     adjustment.incrementAffectedSales(sale.getUnits());
                 });
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 List<Sale> revertChanges = (List<Sale>) SerializationUtils.deserialize(salesBackup);
                 sales.clear();
                 sales.addAll(revertChanges);

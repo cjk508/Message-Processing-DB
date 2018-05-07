@@ -4,7 +4,6 @@ import com.codeiscoffee.processing.data.Sale;
 import com.codeiscoffee.processing.service.ReportingService;
 import com.codeiscoffee.processing.service.SalesService;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

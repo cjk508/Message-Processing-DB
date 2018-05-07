@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <property name="LOG_PATH" value="logs"/>
+    <property name="SPRING_LOG" value="spring"/>
+    <property name="SALES_LOG" value="sales"/>
+
+    <appender name="SALES-APPENDER"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${SALES_LOG}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${FILE_LOG_PATTERN}</Pattern>
+        </encoder>
+
+        <!-- Comment out rolling policies to test how the remaining one works -->
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_PATH}/archived/${SALES_LOG}.%d{dd-MM-yyyy}.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="SPRING-APPENDER"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${SPRING_LOG}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${FILE_LOG_PATTERN}</Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_PATH}/archived/${SPRING_LOG}.%d{dd-MM-yyyy}.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.codeiscoffee.processing.data.sales" additivity="false" level="debug">
+        <appender-ref ref="SALES-APPENDER"/>
+    </logger>
+
+    <logger name="org.springframework" additivity="false" level="info">
+        <appender-ref ref="SPRING-APPENDER"/>
+    </logger>
+
+    <logger name="org.codeiscoffee" additivity="false" level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="SALES-APPENDER"/>
+    </logger>
+
+    <root level="OFF">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

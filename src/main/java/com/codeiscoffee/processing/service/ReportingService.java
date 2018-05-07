@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class ReportingService {
     private SalesService salesService;
 
-    public String reportSales() {
+    public String reportOnSales() {
         StringBuilder builder = new StringBuilder();
-        log.info("Sales Report after "+salesService.getSuccessfulMessages()+" sales");
+        log.info("Sales Report after "+salesService.getSuccessfulMessages()+" messages");
         salesService.getSales().forEach((product, sales) ->{
-            int totalSales = sales.size();
+            int totalSales = sales.stream().mapToInt(Sale::getOccurrences).sum();
             Double totalValue = sales.stream().mapToDouble(Sale::calculateValue).sum();
             String logMessage = WordUtils.capitalizeFully(product) +" has "+totalSales+" sale(s), totalling £"+totalValue;
             log.info(logMessage);

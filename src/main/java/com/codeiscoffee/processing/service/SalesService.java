@@ -16,10 +16,11 @@ public class SalesService {
     @Getter
     private int successfulMessages = 0;
 
-    public Sale registerSale(String productType, Double value) {
+    public Sale registerSale(String productType, Double value, int occurrences) {
         validateProductType(productType);
         validateValue(value);
-        Sale sale = sales.addSale(productType, value);
+        Sale sale = new Sale(productType,value,occurrences);
+        sales.addSale(sale);
         successfulMessages++;
         return sale;
     }

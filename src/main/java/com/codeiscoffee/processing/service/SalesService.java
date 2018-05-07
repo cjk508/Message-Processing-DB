@@ -1,5 +1,6 @@
 package com.codeiscoffee.processing.service;
 
+import com.codeiscoffee.processing.data.Sale;
 import com.codeiscoffee.processing.data.Sales;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,15 @@ public class SalesService {
 
     @Getter
     private Sales sales = new Sales();
+    @Getter
+    private int successfulMessages = 0;
 
-    public void registerSale(String productType, Double value){
+    public Sale registerSale(String productType, Double value){
         validateProductType(productType);
         validateValue(value);
-        sales.addSale(productType, value);
+        Sale sale = sales.addSale(productType, value);
+        successfulMessages++;
+        return sale;
     }
 
     private void validateValue(Double value) {

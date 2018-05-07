@@ -1,10 +1,10 @@
 package com.codeiscoffee.processing.data;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Data
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Sale {
     private String productType;
     private Double value;

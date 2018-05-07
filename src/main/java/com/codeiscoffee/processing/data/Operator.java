@@ -15,12 +15,12 @@ public enum Operator {
             return initialValue * adjustment;
         }
     },
-    SUBTRACT("subtract","-") {
+    SUBTRACT("subtract", "-") {
         @Override
         public Double apply(Double initialValue, Double adjustment) {
 
             Double newValue = initialValue - adjustment;
-            if(newValue < 0 ){
+            if (newValue < 0) {
                 throw new IllegalArgumentException("After adjustment the value for this product would be less than 0. All values must remain greater than or equal to 0");
             }
             return newValue;

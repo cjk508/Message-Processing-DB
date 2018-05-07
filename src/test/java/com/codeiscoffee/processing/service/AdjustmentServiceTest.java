@@ -51,13 +51,13 @@ public class AdjustmentServiceTest {
         Sale apple = new Sale("Apple", 5, 5d);
         sales.addSale(apple);
         Mockito.when(salesService.getSales()).thenReturn(sales);
-        try{
+        try {
             sut.processAdjustment("Apple", 10d, Operator.SUBTRACT);
-        }catch(Exception e){
+        } catch (Exception e) {
             Assert.assertTrue(e instanceof IllegalArgumentException);
         }
 
-        Assert.assertEquals("Change was not reverted.",5d, apple.getValue(), 0.00001);
+        Assert.assertEquals("Change was not reverted.", 5d, apple.getValue(), 0.00001);
     }
 
     @Test

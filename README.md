@@ -1,6 +1,6 @@
 # Message-Processing-DB
 I have chosen to implement this as a RESTful web service as this is slightly more in line with the job specification.
- In the past when I have needed to achieve something similar to this, I have ingested a file located on a mounted folder (SFTP). cccc
+ In the past when I have needed to achieve something similar to this, I have ingested a file located on a mounted folder (SFTP).
 
 ## Assumptions
 Naturally, I have made a few assumptions on top of those set out in the specification. Here's a list of the main assumptions that I have made:

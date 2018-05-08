@@ -35,7 +35,7 @@ public class AdjustmentController {
     @ApiOperation(value = "Adjust historic sales for 1 product using a set of 3 operations (Add, Subtract or Multiply). If any operation causes " +
             "a historic sale to drop below zero then it will fail and the change will be reverted.", response = String.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Adjustment had been created")
+            @ApiResponse(code = 201, message = "Adjustment has been created")
     })
     public ResponseEntity<String> registerAdjustment(@RequestParam(value = "productType") String productType, @RequestParam(value = "value") Double value, @RequestParam(value = "operator") Operator operator) {
         HttpStatus errorStatus;
@@ -47,11 +47,11 @@ public class AdjustmentController {
             throw new MessageLimitException(messageCountService.getSuccessfulMessages());
         } catch (MessageLimitException e) {
             errorStatus = HttpStatus.FORBIDDEN;
-            errorBody = generateErrorResponse(productType, value, operator, e);
+            errorBody = generateErrorBody(productType, value, operator, e);
 
         } catch (Exception e) {
             errorStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            errorBody = generateErrorResponse(productType, value, operator, e);
+            errorBody = generateErrorBody(productType, value, operator, e);
             log.error("Error when adjusting sales of " + productType + " with adjustment " + operator.getSymbol() + value, e);
         }
         return new ResponseEntity<>(errorBody, new HttpHeaders(), errorStatus);
@@ -63,26 +63,22 @@ public class AdjustmentController {
         String body;
         try {
             Adjustment adjustment = adjService.processAdjustment(productType, value, operator);
+
             messageCountService.registerSuccessfulMessage();
-            if (messageCountService.getSuccessfulMessages() % 10 == 0) {
-                reportingService.reportOnSales();
-            }
-            if (messageCountService.getSuccessfulMessages() == 50) {
-                log.info("Service has processed its 50th message. The process will now pause and stop accepting new messages.");
-                reportingService.reportOnAdjustments();
-            }
-            body = generateSuccessResponse(adjustment);
+            reportingService.printReportsWhenNecessary();
+
+            body = generateSuccessBody(adjustment);
             status = HttpStatus.CREATED;
 
         } catch (IllegalArgumentException e) {
-            body = generateErrorResponse(productType, value, operator, e);
+            body = generateErrorBody(productType, value, operator, e);
             status = HttpStatus.BAD_REQUEST;
             log.error("Error when adjusting sales of " + productType + " with adjustment " + operator.getSymbol() + value, e);
         }
         return new ResponseEntity<>(body, headers, status);
     }
 
-    private String generateSuccessResponse(Adjustment adjustment) {
+    private String generateSuccessBody(Adjustment adjustment) {
         String body;
         Gson gson = new Gson();
         JsonObject json = new JsonObject();
@@ -92,7 +88,7 @@ public class AdjustmentController {
         return body;
     }
 
-    private String generateErrorResponse(String productType, Double value, Operator operator, Exception e) {
+    private String generateErrorBody(String productType, Double value, Operator operator, Exception e) {
         String body;
         JsonObject json = new JsonObject();
         json.addProperty("errorMessage", e.getMessage());

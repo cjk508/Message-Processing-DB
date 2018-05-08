@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 @Slf4j(topic = "org.codeiscoffee.processing.data.sales")
 public class Adjustments extends HashMap<String, ArrayDeque<Adjustment>> {

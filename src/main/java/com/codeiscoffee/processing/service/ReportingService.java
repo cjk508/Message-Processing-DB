@@ -8,11 +8,10 @@ import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayDeque;
 import java.util.Iterator;
-import java.util.LinkedList;
+
+import static com.codeiscoffee.processing.util.ReportStringGenerator.generateNumberString;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,22 +21,31 @@ public class ReportingService {
     private AdjustmentService adjustmentService;
     private MessageCountService messageCountService;
 
-    public String reportOnSales() {
+    public void printReportsWhenNecessary(){
+        if (messageCountService.getSuccessfulMessages() % 10 == 0) {
+            reportOnSales();
+        }
+        if (messageCountService.getSuccessfulMessages() == 50) {
+            log.info("Service has processed its 50th message. The process will now pause and stop accepting new messages.");
+            reportOnAdjustments();
+        }
+    }
+
+
+    protected String reportOnSales() {
         StringBuilder builder = new StringBuilder();
         log.info("Sales Report after " + messageCountService.getSuccessfulMessages() + " messages");
         salesService.getSales().forEach((product, sales) -> {
             int totalSales = sales.stream().mapToInt(Sale::getUnits).sum();
             Double totalValue = sales.stream().mapToDouble(Sale::calculateValue).sum();
-            String logMessage = WordUtils.capitalizeFully(product) + " has " + totalSales + " sale(s), totalling £" + roundDoubleTo2DP(totalValue);
-            log.info(logMessage);
-            builder.append(logMessage);
-            builder.append("\n");
+            String logMessage = WordUtils.capitalizeFully(product) + " has " + totalSales + " sale(s), totalling £" + generateNumberString(totalValue, true);
+            logMessageAndBuildString(builder, logMessage);
         });
         return builder.toString();
     }
 
 
-    public String reportOnAdjustments() {
+    protected String reportOnAdjustments() {
         StringBuilder builder = new StringBuilder();
         log.info("Adjustments report after " + messageCountService.getSuccessfulMessages() + " messages");
 
@@ -58,18 +66,16 @@ public class ReportingService {
         Iterator<Adjustment> iterator = adjustments.descendingIterator();
         while(iterator.hasNext()){
             Adjustment adj = iterator.next();
-            String logMessage = WordUtils.capitalizeFully(product) + " first " + adj.getAffectedSales() + " sale(s) adjusted by " + adj.getOperator().getSymbol() + roundDoubleTo2DP(adj.getValue());
-            log.info(logMessage);
-            builder.append(logMessage);
-            builder.append("\n");
+            String logMessage = WordUtils.capitalizeFully(product) + " first " + adj.getAffectedSales() + " sale(s) adjusted by " + adj.getOperator().getSymbol() + generateNumberString(adj.getValue(), false);
+            logMessageAndBuildString(builder, logMessage);
         }
         
         return builder.toString();
     }
 
-    private String roundDoubleTo2DP(Double figureToBeRounded) {
-        BigDecimal bdVal = BigDecimal.valueOf(figureToBeRounded);
-        bdVal = bdVal.setScale(2, RoundingMode.HALF_EVEN);
-        return bdVal.toPlainString();
+    private void logMessageAndBuildString(StringBuilder builder, String logMessage) {
+        log.info(logMessage);
+        builder.append(logMessage);
+        builder.append("\n");
     }
 }

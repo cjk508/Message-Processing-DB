@@ -22,7 +22,7 @@ public class SalesServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullValue() {
-        String productType = "Product";
+        String productType = "ProductValue";
         sut.registerSale(productType, null, 1);
     }
 

@@ -9,7 +9,7 @@ public class MessageCountService {
     @Getter
     private int successfulMessages = 0;
 
-    public int registerSuccessfulMessage() {
-        return ++successfulMessages;
+    public void registerSuccessfulMessage() {
+        successfulMessages++;
     }
 }

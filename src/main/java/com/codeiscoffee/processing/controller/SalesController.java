@@ -45,11 +45,11 @@ public class SalesController {
             throw new MessageLimitException(messageCountService.getSuccessfulMessages());
         } catch (MessageLimitException e) {
             errorStatus = HttpStatus.FORBIDDEN;
-            errorBody = generateErrorResponse(productType, value, units, e);
+            errorBody = generateErrorBody(productType, value, units, e);
 
         } catch (Exception e) {
             errorStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            errorBody = generateErrorResponse(productType, value, units, e);
+            errorBody = generateErrorBody(productType, value, units, e);
             log.error("Internal error occurred when registering sale of " + productType + " at price " + value + " for " + units + " units", e);
         }
         return new ResponseEntity<>(errorBody, new HttpHeaders(), errorStatus);
@@ -63,25 +63,20 @@ public class SalesController {
 
             Sale sale = salesService.registerSale(productType, value, occurrences);
             messageCountService.registerSuccessfulMessage();
-            if (messageCountService.getSuccessfulMessages() % 10 == 0) {
-                reportingService.reportOnSales();
-            }
-            if (messageCountService.getSuccessfulMessages() == 50) {
-                log.info("Service has processed its 50th message. The process will now pause and stop accepting new messages.");
-                reportingService.reportOnAdjustments();
-            }
-            body = generateSuccessfulSaleResponse(sale);
+            reportingService.printReportsWhenNecessary();
+
+            body = generateSuccessBody(sale);
             status = HttpStatus.CREATED;
 
         } catch (IllegalArgumentException e) {
-            body = generateErrorResponse(productType, value, occurrences, e);
+            body = generateErrorBody(productType, value, occurrences, e);
             status = HttpStatus.BAD_REQUEST;
             log.error("Error with parameters for sale of " + productType + " at price £" + value + " for " + occurrences + " occurrences", e);
         }
         return new ResponseEntity<>(body, headers, status);
     }
 
-    private String generateSuccessfulSaleResponse(Sale sale) {
+    private String generateSuccessBody(Sale sale) {
         String body;
         Gson gson = new Gson();
         JsonObject json = new JsonObject();
@@ -91,7 +86,7 @@ public class SalesController {
         return body;
     }
 
-    private String generateErrorResponse(String productType, Double value, int occurrences, Exception e) {
+    private String generateErrorBody(String productType, Double value, int occurrences, Exception e) {
         String body;
         JsonObject json = new JsonObject();
         json.addProperty("errorMessage", e.getMessage());

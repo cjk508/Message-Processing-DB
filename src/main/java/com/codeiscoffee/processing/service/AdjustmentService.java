@@ -4,7 +4,7 @@ import com.codeiscoffee.processing.data.Operator;
 import com.codeiscoffee.processing.data.adjustment.Adjustment;
 import com.codeiscoffee.processing.data.adjustment.Adjustments;
 import com.codeiscoffee.processing.data.sales.Sale;
-import com.codeiscoffee.processing.validation.ProductValueValidation;
+import com.codeiscoffee.processing.util.ProductValueValidator;
 import lombok.Getter;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AdjustmentService implements ProductValueValidation {
+public class AdjustmentService {
 
     @Getter
     private Adjustments adjustments;
@@ -28,8 +28,8 @@ public class AdjustmentService implements ProductValueValidation {
     }
 
     public Adjustment processAdjustment(String productType, Double value, Operator operator) {
-        productType = validateProductType(productType);
-        validateValue(value);
+        productType = ProductValueValidator.validateAndTrimProductType(productType);
+        ProductValueValidator.validateValue(value);
         Adjustment adjustment = new Adjustment(productType, operator, value);
         adjustSales(adjustment);
         adjustments.queueAdjustment(adjustment);

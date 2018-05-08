@@ -1,20 +1,22 @@
 package com.codeiscoffee.processing.data.sales;
 
-import lombok.*;
+import com.codeiscoffee.processing.data.ProductValue;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-import java.io.Serializable;
-
-@AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
 @Getter
-public class Sale implements Serializable {
-    private final String productType;
+public class Sale extends ProductValue {
     private final int units;
-    @Setter
-    private Double value;
+
+    public Sale(String productType, int units, Double value) {
+        super(productType, value);
+        this.units = units;
+    }
 
     public Double calculateValue() {
-        return value * units;
+        return getValue() * units;
     }
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SalesService  {
+public class SalesService {
 
     @Getter
     private Sales sales = new Sales();

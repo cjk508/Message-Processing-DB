@@ -21,7 +21,7 @@ public class ReportingService {
     private AdjustmentService adjustmentService;
     private MessageCountService messageCountService;
 
-    public void printReportsWhenNecessary(){
+    public void printReportsWhenNecessary() {
         if (messageCountService.getSuccessfulMessages() % 10 == 0) {
             reportOnSales();
         }
@@ -64,12 +64,12 @@ public class ReportingService {
     private String generateReportForProduct(String product, ArrayDeque<Adjustment> adjustments) {
         StringBuilder builder = new StringBuilder();
         Iterator<Adjustment> iterator = adjustments.descendingIterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Adjustment adj = iterator.next();
             String logMessage = WordUtils.capitalizeFully(product) + " first " + adj.getAffectedSales() + " sale(s) adjusted by " + adj.getOperator().getSymbol() + generateNumberString(adj.getValue(), false);
             logMessageAndBuildString(builder, logMessage);
         }
-        
+
         return builder.toString();
     }
 

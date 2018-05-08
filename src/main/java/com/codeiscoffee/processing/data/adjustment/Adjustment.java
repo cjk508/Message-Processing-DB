@@ -15,7 +15,7 @@ public class Adjustment extends ProductValue {
     private int affectedSales = 0;
 
     public Adjustment(String productType, Operator operator, Double value) {
-        super(productType,value);
+        super(productType, value);
         this.operator = operator;
     }
 

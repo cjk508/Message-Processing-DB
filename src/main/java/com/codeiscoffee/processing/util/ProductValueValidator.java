@@ -6,7 +6,8 @@ import java.util.Objects;
 
 public class ProductValueValidator {
 
-    private ProductValueValidator(){}
+    private ProductValueValidator() {
+    }
 
     public static void validateValue(Double value) {
         if (Objects.isNull(value)) {

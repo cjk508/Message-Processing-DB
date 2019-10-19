@@ -1,0 +1,9 @@
+language: java
+addons:
+  sonarcloud:
+    organization: "codeiscoffee"
+    token:
+      secure: $SONAR
+
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar

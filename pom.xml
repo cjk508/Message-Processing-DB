@@ -122,5 +122,13 @@
         </plugins>
     </build>
 
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.com/cjk508/Message-Processing-DB</url>
+	</ciManagement>
 
+	<scm>
+		<url>https://github.com/cjk508/Message-Processing-DB</url>
+		<connection>https://github.com/cjk508/Message-Processing-DB.git</connection>
+	</scm>
 </project>

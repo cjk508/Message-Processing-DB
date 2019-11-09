@@ -16,9 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +31,7 @@ public class AdjustmentController {
     private ReportingService reportingService;
     private MessageCountService messageCountService;
 
-    @RequestMapping(value = "/adjustment", method = RequestMethod.POST, produces = "application/json")
+    @PostMapping(value = "/adjustment", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Adjust historic sales for 1 product using a set of 3 operations (Add, Subtract or Multiply). If any operation causes " +
             "a historic sale to drop below zero then it will fail and the change will be reverted.", response = String.class)
     @ApiResponses(value = {

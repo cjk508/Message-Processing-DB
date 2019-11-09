@@ -5,5 +5,4 @@ addons:
     organization: "codeiscoffee"
     token: $SONAR_TOKEN
 script:
-  - jdk_switcher use openjdk8
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=cjk508_Message-Processing-DB

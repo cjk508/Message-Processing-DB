@@ -3,7 +3,8 @@ jdk: openjdk8
 addons:
   sonarcloud:
     organization: "codeiscoffee"
-    token: $SONAR
+    token:
+      secure: "ItXESj/iNDnvHCXZclpYR+n05DdauqS072uU7c3Qdq+3aGDtKICLKQDROjjZ9EP78bEYwpysRfZ7x29bnyFEJvWE+H1PCkDLASO8nEYPZ2NxV8MA4uBUTOY0pSwA3ARvF9if/kSwCpzSYY7gxXd1aIQOOvu5wMVnVwf+rItO6koqOtSlR90inVT1rLnycu6vFDNEjmmwzdMjEJM+PmNB6SyBf+4NT2lT2CsI0B4snMvwzrgqdHE/SSUv4dPa8f8oe3Th+Dad1ebWN+UyXOSAsq8R+gH2RYw0Jnlq3B5bbY+UPZk3AoIeS5G1T2PeZz437oKlJ0Z46WFFF2v41kizyrSz0mg5eS/Pn3GnuBdVa15FJbtZC3P8VUfSOGp6zXYJy6xzBMaRse0K+bKCgysxx2d+9C1oqVQVETYiFERXnaKodpr2As0ln9lTaIWTlWcFP7f1+KZYbQqJuioEAQSzIWXsBBtdy4IVsctFAYS3UZk5LYdAzK8WupTn+wKRmFQrH8W0iE4cFQhfYlyv/g1/06myNSZwZTGCKr+m5DR5dbqoyyKediggviEc0y6tO9t5qexcReCYFeJJ5XA9iwkGgUtW8wz6I956mTxSn/EmxD3vl3nWKxc3IODjU1jfX4UOedTY+n9qJeeNMphrAmdGqziCraEcIAII2b6tMJhvlbk="
 script:
   - jdk_switcher use openjdk8
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar

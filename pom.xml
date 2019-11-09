@@ -10,6 +10,7 @@
 
     <name>processing</name>
     <description>Message Processing DB</description>
+	<url>https://codeis.coffee</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

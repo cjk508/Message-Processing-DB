@@ -1,4 +1,4 @@
-# Message-Processing-DB
+# Message-Processing-DB [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cjk508_Message-Processing-DB&metric=alert_status)](https://sonarcloud.io/dashboard?id=cjk508_Message-Processing-DB)  [![Build Status](https://travis-ci.com/cjk508/Message-Processing-DB.svg?branch=master)](https://travis-ci.com/cjk508/Message-Processing-DB)
 I have chosen to implement this as a RESTful web service as this is slightly more in line with the job specification.
  In the past when I have needed to achieve something similar to this, I have ingested a file located on a mounted folder (SFTP).
 
